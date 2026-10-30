@@ -28,6 +28,12 @@ jobs:
       - name: Construir imagen Docker
         run: docker build -t dds-devops:test .
 
+      - name: Desplegar en Render
+        env:
+          RENDER_DEPLOY_HOOK: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
+        run: |
+          curl -fsS -X POST "$RENDER_DEPLOY_HOOK"
+
       - name: Verificar funcionamiento
         run: |
           docker run -d --name web-test \
